@@ -5,7 +5,7 @@ class Result extends StatelessWidget {
   final int resultScore;
   final VoidCallback resetHandler;
 
-  Result(this.resultScore, this.resetHandler);
+  const Result(this.resultScore, this.resetHandler, {super.key});
 
   String get resultPhrase {
     String resultText;
@@ -23,8 +23,8 @@ class Result extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 239, 236, 240).withOpacity(0.9),
-            offset: Offset(0, 8),
+            color: const Color.fromARGB(255, 239, 236, 240).withOpacity(0.9),
+            offset: const Offset(0, 8),
             blurRadius: 4,
           ),
         ],
@@ -35,27 +35,27 @@ class Result extends StatelessWidget {
           children: <Widget>[
             Text(
               resultPhrase,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.purple),
               textAlign: TextAlign.center,
-              selectionColor: Color.fromARGB(255, 181, 148, 187),
+              selectionColor: const Color.fromARGB(255, 181, 148, 187),
             ),
             Column(
               children: [
                 TextButton(
                   onPressed: resetHandler,
-                  child: Text(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.purple),
+                  ),
+                  child: const Text(
                     'Restart Quiz!',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                     ),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.purple),
                   ),
                 ),
               ],
