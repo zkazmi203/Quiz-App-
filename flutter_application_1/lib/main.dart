@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+// import 'package:flutter_libserialport/flutter_libserialport.dart';
+import 'package:linear_progress_bar/linear_progress_bar.dart';
 import './quiz.dart';
 import './result.dart';
 
@@ -12,6 +14,8 @@ class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _MyAppState();
+    //   List<String> availablePort = SerialPort.availablePorts;
+    //   print('Available Port: $availablePort');
   }
 }
 
@@ -67,10 +71,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _answerQuestion(int score) {
-    // void _answerQuestion() {
-    // bool aval = true;
-    // aval = false;
-
     _totalScore += score;
 
     setState(() {
@@ -84,75 +84,75 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // var dummy = const ['Hello'];
-    // dummy.add('Max');
-    // print(dummy);
-    // dummy = [];
-    // _questions = []; // will not work if _questions is const
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Quiz'),
-          backgroundColor: Colors.purple,
-          toolbarHeight: 80,
-          centerTitle: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(30.0),
-            ),
-          ),
-        ),
-        body: Container(
-          padding: const EdgeInsets.all(9.0),
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white,
-                blurRadius: 5.0,
-                spreadRadius: 2.0,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
+        // appBar: AppBar(
+        //   title: const Text('Quiz'),
+        //   backgroundColor: Colors.purple,
+        //   toolbarHeight: 50,
+        //   centerTitle: true,
+        //   shape: const RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.vertical(
+        //       bottom: Radius.circular(30.0),
+        //     ),
+        //   ),
+        // ),
+        body: SafeArea(
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: _questionIndex < _questions.length
-                      ? Quiz(
-                          questions: _questions,
-                          answerQuestion: _answerQuestion,
-                          questionIndex: _questionIndex,
-                        )
-                      : Result(_totalScore, _resetQuiz),
+            padding: const EdgeInsets.all(9.0),
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white,
+                  blurRadius: 5.0,
+                  spreadRadius: 2.0,
+                  offset: Offset(0, 2),
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: DotsIndicator(
-                    dotsCount: _questions.length,
-                    position: (_questionIndex < _questions.length)
-                        ? _questionIndex.toDouble()
-                        : (_questions.length - 1).toDouble(),
-                    decorator: DotsDecorator(
-                        color: const Color.fromARGB(255, 171, 129, 185),
-                        size: const Size.square(9.0),
-                        activeSize: const Size(18.0, 9.0),
-                        activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        activeColor: Colors.purple),
-                  ),
-                ),
-                // Image.asset(
-                //   'assests/cat2.gif',
-                // ),
               ],
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LinearProgressBar(
+                    maxSteps: _questions.length,
+                    progressType: LinearProgressBar.progressTypeLinear,
+                    currentStep: _questionIndex,
+                    progressColor: Colors.purple,
+                    backgroundColor: Colors.grey[400],
+                  ),
+                  Expanded(
+                    child: _questionIndex < _questions.length
+                        ? Quiz(
+                            questions: _questions,
+                            answerQuestion: _answerQuestion,
+                            questionIndex: _questionIndex,
+                          )
+                        : Result(_totalScore, _resetQuiz),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: DotsIndicator(
+                      dotsCount: _questions.length,
+                      position: (_questionIndex < _questions.length)
+                          ? _questionIndex.toDouble()
+                          : (_questions.length - 1).toDouble(),
+                      decorator: DotsDecorator(
+                          color: const Color.fromARGB(255, 171, 129, 185),
+                          size: const Size.square(9.0),
+                          activeSize: const Size(18.0, 9.0),
+                          activeShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          activeColor: Colors.purple),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
